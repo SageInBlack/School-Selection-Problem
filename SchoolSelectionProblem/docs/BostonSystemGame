@@ -1,0 +1,14 @@
+The old Boston School System is a widely studied school system for the study of the Student Distribution Promblem.
+
+
+What is understood about the agents in play.
+
+Student:
+
+Schools:
+
+The very simplified game that simulates the Boston School System.
+
+Everyone is given a score and a set of true School Preferences.
+A set of "schools" with number of seats is given.
+A scoring table for points given when you enter a school according to you true School preferences.
