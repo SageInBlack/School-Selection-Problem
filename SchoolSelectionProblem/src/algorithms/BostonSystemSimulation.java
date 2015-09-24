@@ -20,12 +20,12 @@ public class BostonSystemSimulation {
 		LinkedList<Student> waitingLine = new  LinkedList<Student>();
 		HashMap<Integer,School> schoolMap = new HashMap<Integer,School>();
 		StringTokenizer st;
-
 		String line;
 		Student student;
 		School school;
-		int maxRanking = 20;
-		
+		int maxRanking = 10;
+		int happinessSum = 0;
+		int[] happiness = {30, 24, 21, 18, 15, 13, 11, 9, 7, 5, 0};
 		//Read in Student Data
 		while ((line = buffer0.readLine()) != null) {
 			line = line.trim();
@@ -50,6 +50,8 @@ public class BostonSystemSimulation {
 			schoolMap.put(school.getId(), school);
 		}
 		//System.out.println(schoolMap.toString());
+		
+		//Distribution Process
 		for(int iteration = 1; iteration <= maxRanking; iteration++){
 			while(!waitingLine.isEmpty()){
 				student = waitingLine.pop();
@@ -71,11 +73,29 @@ public class BostonSystemSimulation {
 				s.nextRank();
 			}
 			//Display Result
-			for(School s: schoolMap)
-			System.out.println(schoolMap);
-			System.out.println(waitingLine.size());
-			System.out.println(waitingLine);
+			System.out.println("\nRound "+ iteration+ "\n");
+			for(School s: schoolMap.values()){
+				System.out.println(s.getName()+ " Seats:" + s.getSeats());
+				for(Student applicant: s.getApplicants()){
+					System.out.println(applicant.toString());
+				}
+			}
+			System.out.println("Student Missed: "+ waitingLine.size());
+			for(Student applicant: waitingLine){
+				System.out.println(applicant.toString());
+			}
+			System.out.println("Round Ended");
 		}
-		//Start Rounds
+		//Evaluate Overall Happiness
+		System.out.println("Overall Happiness" + "\n");
+		for(School s: schoolMap.values()){
+			for(Student applicant: s.getApplicants()){
+				happinessSum += applicant.getCurrentRankListing();
+			}
+		}
+		for(Student applicant: waitingLine){
+			happinessSum += applicant.getCurrentRankListing();
+		}
+		System.out.print(happinessSum);
 	}
 }
