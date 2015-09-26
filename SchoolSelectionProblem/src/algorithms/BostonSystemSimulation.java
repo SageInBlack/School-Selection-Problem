@@ -14,43 +14,18 @@ import agents.Student;
 
 public class BostonSystemSimulation {
 	public static void main (String[] args) throws IOException {
-		File studentDataFile = new File(args[0]);
-		BufferedReader buffer0 = new BufferedReader(new FileReader(studentDataFile));
 		
 		LinkedList<Student> waitingLine = new  LinkedList<Student>();
 		HashMap<Integer,School> schoolMap = new HashMap<Integer,School>();
-		StringTokenizer st;
-		String line;
 		Student student;
 		School school;
 		int maxRanking = 10;
 		int happinessSum = 0;
 		int[] happiness = {30, 24, 21, 18, 15, 13, 11, 9, 7, 5, 0};
-		//Read in Student Data
-		while ((line = buffer0.readLine()) != null) {
-			line = line.trim();
-			st = new StringTokenizer(line,"\t");
-			student = new Student(st.nextToken(),st.nextToken(),Integer.parseInt(st.nextToken()));
-			while(st.hasMoreTokens()){
-				student.addSchool(Integer.parseInt(st.nextToken()));
-			}
-			//System.out.println(student.getSchoolRankList());
-			waitingLine.add(student);
-		}
-		//System.out.println(waitingLine.toString());
 
-		//Read in School Data
-		File schoolDataFile = new File(args[1]);
-		BufferedReader buffer1 = new BufferedReader(new FileReader(schoolDataFile));
-		while ((line = buffer1.readLine()) != null) {
-			line = line.trim();
-			st = new StringTokenizer(line,"\t");
-			school = new School(Integer.parseInt(st.nextToken()),st.nextToken(),Integer.parseInt(st.nextToken()));
-			//System.out.println(school);
-			schoolMap.put(school.getId(), school);
-		}
-		//System.out.println(schoolMap.toString());
-		
+		waitingLine = BootStrap.generateStudentList(args[0]);
+		schoolMap = BootStrap.generateSchoolMap(args[1]);
+
 		//Distribution Process
 		for(int iteration = 1; iteration <= maxRanking; iteration++){
 			while(!waitingLine.isEmpty()){
