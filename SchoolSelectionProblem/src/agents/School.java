@@ -60,25 +60,20 @@ public class School {
 		this.applicants = applicants;
 	}
 
-	public boolean addApplicant(Student student) {
-		if (this.hasSeats()) {
+	public void addApplicant(Student student) {
+		applicants.add(student);
+		seats--;
+	}
+	public boolean addApplicantWithRejection(Student student){
+		if(this.hasSeats()){
 			applicants.add(student);
 			seats--;
 			return true;
-		} else {
+		}else{
 			return false;
 		}
-
 	}
-
-	public void sortByGrades() {
-		Collections.sort(this.applicants, new CompareByGrade());
-	}
-
-	public void sortByRankAndGrades() {
-		Collections.sort(this.applicants, new CompareByRankAndGrade());
-	}
-
+	
 	public Student removeBottomStudent() {
 		seats++;
 		return applicants.removeLast();

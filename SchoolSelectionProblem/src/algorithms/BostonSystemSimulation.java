@@ -5,10 +5,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
+import agents.CompareByRankAndGrade;
 import agents.School;
 import agents.Student;
 
@@ -19,13 +21,12 @@ public class BostonSystemSimulation {
 		HashMap<Integer,School> schoolMap = new HashMap<Integer,School>();
 		Student student;
 		School school;
-		int maxRanking = 10;
+		int maxRanking = 20;
 		int happinessSum = 0;
-		int[] happiness = {30, 24, 21, 18, 15, 13, 11, 9, 7, 5, 0};
 
 		waitingLine = BootStrap.generateStudentList(args[0]);
 		schoolMap = BootStrap.generateSchoolMap(args[1]);
-
+		
 		//Distribution Process
 		for(int iteration = 1; iteration <= maxRanking; iteration++){
 			while(!waitingLine.isEmpty()){
@@ -34,10 +35,10 @@ public class BostonSystemSimulation {
 				school.addApplicant(student);
 			}
 			//System.out.println(schoolMap);
-
+			//TODO: Find a way to eleminate random student from the lowest score
 			//Elimination Round
 			for(School s: schoolMap.values()){
-				s.sortByRankAndGrades();
+				Collections.sort(s.getApplicants(), new CompareByRankAndGrade());
 				for(int count = s.getSeats(); count < 0 ; count++){
 					waitingLine.add(s.removeBottomStudent());
 				}
@@ -65,12 +66,11 @@ public class BostonSystemSimulation {
 		System.out.println("Overall Happiness" + "\n");
 		for(School s: schoolMap.values()){
 			for(Student applicant: s.getApplicants()){
-				happinessSum += applicant.getCurrentRankListing();
+				happinessSum += applicant.generateHappiness(maxRanking);
 			}
 		}
-		for(Student applicant: waitingLine){
-			happinessSum += applicant.getCurrentRankListing();
-		}
-		System.out.print(happinessSum);
+		System.out.println("Student with no school:"+ waitingLine.size());
+		System.out.println("Boston System");
+		System.out.println(happinessSum);
 	}
 }

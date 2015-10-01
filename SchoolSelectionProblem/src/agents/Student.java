@@ -72,4 +72,8 @@ public class Student {
 	public Integer getCurrentRankSchool() {
 		return schoolRankList.get(currentRankListing - 1);
 	}
+	
+	public int generateHappiness(int maxListRank){
+		return (maxListRank - currentRankListing+2)*(maxListRank - currentRankListing+1)/2;
+	}
 }

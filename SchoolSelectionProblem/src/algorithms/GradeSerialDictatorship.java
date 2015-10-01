@@ -17,10 +17,10 @@ public class GradeSerialDictatorship {
 		Student student;
 		LinkedList<Integer> studentPreferences;
 		School school;
-		int maxRanking = 10;
+		int maxRanking = 20;
 		int count = 1, studentSize, pointer;
 		int happinessSum = 0;
-		int[] happiness = { 30, 24, 21, 18, 15, 13, 11, 9, 7, 5, 0 };
+		int[] happiness = {15, 10, 6, 3, 1, 0,};
 
 		waitingLine = BootStrap.generateStudentList(args[0]);
 		studentSize = waitingLine.size();
@@ -37,11 +37,15 @@ public class GradeSerialDictatorship {
 			studentPreferences = student.getSchoolRankList();
 			// Try to add student to school, if it doesn't add, go to the next
 			// one and try again
+			
 			for (pointer = 0; pointer < maxRanking; pointer++) {
 				school = schoolMap.get(studentPreferences.get(pointer));
-				if (school.addApplicant(student)) {
+				if (school.addApplicantWithRejection(student)) {
 					System.out.println(student.getName() + " has entered: " + school.getName());
+					happinessSum += student.generateHappiness(maxRanking);
 					break;
+				}else{
+					student.nextRank();
 				}
 			}
 			//If pointer gets to max ranking, then the student has not getten into any school
@@ -52,6 +56,8 @@ public class GradeSerialDictatorship {
 			count++;
 		}
 		//Students without Schools
-		System.out.println(waitingLine.size());
+		System.out.println(waitingLine.size() + " Students has no school");
+		System.out.println("Serial Dictatorship");
+		System.out.println("Happiness: "+ happinessSum);
 	}
 }
